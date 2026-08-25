@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MyHook 通用响应修改"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FF1A1A1A"
+            android:paddingBottom="8dp" />
+
+        <Switch
+            android:id="@+id/sw_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="启用模块"
+            android:textColor="#FF1A1A1A"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+        <Switch
+            android:id="@+id/sw_smart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="智能匹配（自动识别中英文 VIP/会员相关字段，无需手写规则，按原字段类型安全翻转，避免闪退）"
+            android:textColor="#FF1A1A1A"
+            android:paddingBottom="8dp" />
+
+        <Switch
+            android:id="@+id/sw_anti_detect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="反检测（过滤堆栈痕迹、隐藏 Xposed 相关文件和管理器 App，降低被 App 识别出注入的概率，效果因 App 而异）"
+            android:textColor="#FF1A1A1A"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="目标 App 包名（可选，不填也能生效——只要在 LSPosed 里给 MyHook 勾选了该 App 的作用域就会自动生效；这里填写只用于给规则加 [包名] 精确限定，或者用于保存时自动 force-stop 对应 App）"
+            android:textColor="#FF666666"
+            android:paddingTop="12dp" />
+
+        <EditText
+            android:id="@+id/et_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:hint="com.xxx.app1&#10;com.xxx.app2"
+            android:inputType="textMultiLine"
+            android:textColor="#FF1A1A1A"
+            android:textColorHint="#FFBBBBBB"
+            android:background="#FFF2F2F2"
+            android:padding="10dp"
+            android:backgroundTint="#FF4CAF50" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="URL 关键字（一行一个，匹配请求的真实 URL，不区分大小写；留空则不按 URL 过滤；支持正则，直接写正则表达式即可，不需要加前缀，例如 ^https?://.*api/v\d/user/.*$）"
+            android:textColor="#FF666666"
+            android:paddingTop="12dp" />
+
+        <EditText
+            android:id="@+id/et_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:hint="userInfo&#10;re:/api/(user|member)/info"
+            android:inputType="textMultiLine"
+            android:textColor="#FF1A1A1A"
+            android:textColorHint="#FFBBBBBB"
+            android:background="#FFF2F2F2"
+            android:padding="10dp"
+            android:backgroundTint="#FF4CAF50" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="替换规则（每行一条，# 开头是注释）&#10;推荐：key=value 按 JSON 字段名精确修改，已忽略大小写和下划线，也能匹配到字符串里嵌套的 JSON&#10;精确定位：data.isVip=true 这种带点号的写法只改指定路径下的字段，不影响别处同名字段&#10;兼容旧写法：旧文本|新文本&#10;可选前缀 [包名] 让某条规则只在指定 App 生效"
+            android:textColor="#FF666666"
+            android:paddingTop="12dp" />
+
+        <EditText
+            android:id="@+id/et_rules"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:gravity="top"
+            android:hint="isvip=true&#10;vipexpiredtime=&quot;2099-12-31 23:59:59&quot;&#10;[com.foo.bar] userLevel=99"
+            android:inputType="textMultiLine"
+            android:textColor="#FF1A1A1A"
+            android:textColorHint="#FFBBBBBB"
+            android:background="#FFF2F2F2"
+            android:padding="10dp"
+            android:backgroundTint="#FF4CAF50"
+            android:fontFamily="monospace" />
+
+        <Button
+            android:id="@+id/btn_example"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="填入 VIP 完整示例规则"
+            android:textColor="#FFFFFFFF"
+            android:backgroundTint="#FF2196F3" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="保存设置"
+            android:textColor="#FFFFFFFF"
+            android:backgroundTint="#FF4CAF50" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="使用说明：\n1. 最简单用法：只需要在 LSPosed 管理器里给 MyHook 勾选目标 App 的作用域，其他都不用填，智能匹配默认开启会自动生效\n2. 包名栏是可选的，不是开关，只用于 [包名] 精确限定规则、或保存时自动 force-stop 对应 App\n3. URL 关键字：不填就对该 App 所有响应生效；如果想缩小范围，填精确一点（比如只填 userInfo），别填太泛的词，否则可能连带改到别的接口的数据\n4. 智能匹配：自动识别常见 VIP/会员字段并按原类型安全翻转，无需手写规则；遇到误判可以关掉，改用手写 key=value 精确规则\n5. 规则：优先用 key=value（按字段名模糊匹配，也支持 data.isVip 这种路径精确匹配），也兼容旧的 旧文本|新文本，写了规则会和智能匹配一起生效\n6. 保存后会自动 force-stop 包名栏里列出的 App；如果包名栏是空的，需要自己手动强制停止目标 App 再打开\n7. LSPosed 管理器 → 日志，或 logcat | grep MyHook 查看是否命中"
+            android:textColor="#FF999999"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+</ScrollView>
